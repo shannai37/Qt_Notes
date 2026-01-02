@@ -6,6 +6,118 @@
 
 2.C++构造函数有哪几种？
 
+默认构造、带参构造、拷贝构造、移动构造
+
+默认构造
+
+```c++
+class Person {
+public:
+  string name;
+  int age;
+ 
+  Person() { // 默认构造函数
+    name = "Unknown";
+    age = 0;
+  }
+};
+ 
+int main() {
+  Person p1; // 创建 Person 对象
+  cout << p1.name << ", " << p1.age << endl; // 输出：Unknown, 0
+ 
+  return 0;
+}
+```
+
+
+
+带参数构造函数
+
+```c++
+class Car {
+public:
+  string brand;
+  string model;
+  int year;
+ 
+  Car(string b, string m, int y) { // 带参数构造函数
+    brand = b;
+    model = m;
+    year = y;
+  }
+};
+ 
+int main() {
+  Car car1("Ford", "Mustang", 1967); // 创建 Car 对象并传入参数
+  cout << car1.brand << " " << car1.model << " " << car1.year << endl; // 输出：Ford Mustang 1967
+ 
+  return 0;
+}
+```
+
+
+
+
+
+拷贝构造函数
+
+拷贝构造函数用于从另一个已存在的对象创建新对象。它通常用于复制另一个对象的属性值，而不共享原始对象的数据
+
+```c++
+class Person {
+public:
+  string name;
+  int age;
+ 
+  Person(const Person& other) { // 拷贝构造函数
+    name = other.name;
+    age = other.age;
+  }
+};
+ 
+int main() {
+  Person p1("Alice", 30); // 创建 Person 对象
+  Person p2(p1); // 拷贝构造函数创建 p2
+ 
+  cout << p2.name << ", " << p2.age << endl; // 输出：Alice, 30
+ 
+  return 0;
+}
+```
+
+
+
+移动构造函数
+
+移动构造函数用于从即将销毁的临时对象转移资源到新对象。它通常用于避免不必要的资源复制，并提高性能。
+
+```c++
+class Person {
+public:
+  string name;
+  int age;
+ 
+  Person(Person&& other) { // 移动构造函数
+    name = std::move(other.name);
+    age = other.age;
+ 
+    // 将 other 的资源转移到 this
+  }
+};
+ 
+int main() {
+  Person p1("Bob", 25); // 创建 Person 对象
+ 
+  Person p2(std::move(p1)); // 移动构造函数创建 p2
+ 
+  cout << p2.name << ", " << p2.age << endl; // 输出：Bob, 25
+  cout << p1.name << ", " << p1.age << endl; // 输出：, 0 (p1 的资源已转移)
+ 
+  return 0;
+}
+```
+
 
 
 ### 一、绝对布局的控件
@@ -203,3 +315,12 @@ Qt StyleSheet（QSS）的常用样式属性，和 CSS 很像：
 `padding: 5px 10px 15px 20px; `→ 上5、右10、下15、左20（顺时针）
 
 没有 padding 的输入框，文字会紧贴边框，很丑；加了 padding，文字和边框有间距，看起来舒服。
+
+
+
+#### 2.图片不显示的原因
+
+`"images/background.jpg"` 是相对路径，相对的是**可执行文件(.exe)**所在目录
+(debug中)你需要把images文件夹放到**构建目录**（build-xxx文件夹）里，不是源码目录
+
+![image-20260102201201314](C:\Users\28293\AppData\Roaming\Typora\typora-user-images\image-20260102201201314.png)
